@@ -20,8 +20,11 @@ const intiliazeServer = async () => {
     }
 }
 
+app.get('/', (req, res) => {
+    res.send("Server Started...")
+})
 // 1. Create an API to list the all transactions
-app.get('/', async (req, res) => {
+app.get('/transactions', async (req, res) => {
     const {page = 1, perPage=10, search=""} = req.query;
     const offset = (page - 1 ) * perPage;
     const searchQuery = search ? `WHERE title LIKE '%${search}%' OR description LIKE '%${search}%' OR price LIKE '%${search}%'` : "";
