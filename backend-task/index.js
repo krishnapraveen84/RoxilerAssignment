@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
 })
 // 1. Create an API to list the all transactions
 app.get('/transactions', async (req, res) => {
+   try{
     const {page = 1, perPage=10, search=""} = req.query;
     const offset = (page - 1 ) * perPage;
     const searchQuery = search ? `WHERE title LIKE '%${search}%' OR description LIKE '%${search}%' OR price LIKE '%${search}%'` : "";
@@ -37,11 +38,17 @@ app.get('/transactions', async (req, res) => {
     `;
     const transectionDetails = await db.all(query);
     res.send(transectionDetails);
+   }
+   catch(err){
+    console.log(err)
+    res.status(500).send("Internal Server Issue")
+   }
 
 })
 
 //2. Create an API for statistics
 app.get('/statistics', async (req, res) => {
+   try{
     const {month} = req.query;
     const formatedMonth = month.padStart(2, '0')
     const query = `
@@ -55,11 +62,17 @@ app.get('/statistics', async (req, res) => {
     `;
     const stats = await db.get(query)
     res.send(stats)
+   }
+   catch(err){
+    console.log(err)
+    res.status(500).send('Internal Server Issue')
+   }
 })
 
 // 3. Create an API for bar chart 
 //( the response should contain price range and the number of items in that range for the selected month regardless of the year )
 app.get('/bar-chart', async (req, res) => {
+    try{
     const {month} = req.query;
     const formatedMonth = month.padStart(2, "0");
     const priceRanges = [
@@ -80,10 +93,16 @@ app.get('/bar-chart', async (req, res) => {
     })
     const result = await Promise.all(promises)
     res.send(result)
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).send('Internal Server Issue')
+       }
 })
 
 // 4. Create an API for pie chart Find unique categories and number of items from that category for the selected month regardless of the year.
 app.get('/pie-chart', async (req, res) => {
+    try{
     const {month} = req.query;
     const formatedMonth = month.padStart(2, "0");
 
@@ -96,11 +115,17 @@ app.get('/pie-chart', async (req, res) => {
     `;
     const categoriesData = await db.all(query);
     res.send(categoriesData);
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).send('Internal Server Issue')
+       }
 })
 
 // 5. Create an API which fetches the data from all the 3 APIs mentioned above, combines the response and sends a final response of the combined JSON
 app.get('/combined', async (req, res) => {
-    const {month} = req.query;
+    try{
+        const {month} = req.query;
     const formatedMonth = month.padStart(2, "0")
 
     //stats data
@@ -142,26 +167,13 @@ app.get('/combined', async (req, res) => {
     `;
     const pieChartData = await db.all(query);
     res.send({statsData,barChartData, pieChartData})
-
+    }
+    
+    catch(err){
+        console.log(err)
+        res.status(500).send('Internal Server Issue')
+       }
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 intiliazeServer()
