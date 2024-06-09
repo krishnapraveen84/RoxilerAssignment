@@ -42,5 +42,5 @@ This project is a web application that displays transaction data, statistics, an
     GET http://localhost:3000/combined?month=01
 # Backend Published On Render
 URL : https://roxilerassignment-re0k.onrender.com
-# FrontEnd Published On Vercel
-URL : https://roxiler-assignment-6c2wl1psr-krishnapraveen84s-projects.vercel.app/
+# FrontEnd Published On Render
+URL : https://roxilerassignment84.onrender.com/
