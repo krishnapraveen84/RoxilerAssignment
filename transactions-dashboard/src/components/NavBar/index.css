@@ -1,0 +1,31 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #232F3E;
+    color: white;
+    padding: 5px 25px 5px 25px;
+    
+    
+  }
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .logo span{
+    color: aqua;
+  }
+  .navLinks {
+    list-style:  none;
+    display: flex;
+    gap: 20px;
+  }
+  .link {
+    text-decoration: none;
+    color: rgb(215, 242, 249);
+    font-size: 18px;
+    font-weight: 550;
+  }
+  .link:hover{
+    color: rgb(5, 242, 155);
+  }
