@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { getBarChartData } from '../../api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import LoaderEffect from '../LoaderSpi';
 
 const BarChartComponent = () => {
   const [barData, setBarData] = useState([]);
   const [month, setMonth] = useState('01');
+  const [isLoading, setIsLoading] = useState(true);
   console.log(month)
   
   useEffect(() => {
+    setIsLoading(true)
     const fetchBarData = async () => {
       try {
         const response = await getBarChartData(month);
         console.log('Bar chart data:', response.data);
         setBarData(response.data);
+        setIsLoading(false)
       } catch (error) {
         console.error('Error fetching bar chart data:', error);
       }
@@ -22,6 +26,7 @@ const BarChartComponent = () => {
   }, [month]);
 
   return (
+    <>{isLoading ? <div className='loader-container'><LoaderEffect /></div> : 
     <div className='bar-bg-container'>
       <h1 className='heading'>BarChart</h1>
     <label className='label'>
@@ -50,9 +55,10 @@ const BarChartComponent = () => {
       <Legend />
       <Bar dataKey="count" fill="#8884d8" />
     </BarChart>
-  </ResponsiveContainer>
+    </ResponsiveContainer>
   
-  </div>
+    </div>}</>
+    
   );
 };
 

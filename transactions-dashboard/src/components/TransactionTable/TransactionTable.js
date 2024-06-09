@@ -2,23 +2,29 @@
 import React, { useState, useEffect } from 'react';
 import { getTransactions } from '../../api';
 import './index.css'
+import LoaderEffect from '../LoaderSpi';
 
 const TransactionTable = ({ month }) => {
   const [transactions, setTransactions] = useState([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] =useState(true)
 
   const fetchTransactions = async () => {
     const response = await getTransactions(search, page);
     setTransactions(response.data);
+    setIsLoading(false)
   };
 
   useEffect(() => {
+    setIsLoading(true)
     fetchTransactions();
   }, [search, page]);
 
   return (
+    <>{isLoading ? <div className='loader-container'><LoaderEffect /></div> : 
     <div className='table-container'>
+      
       <h1 className='heading'>Transactions Table</h1>
       <input
         className='search-box'
@@ -55,7 +61,8 @@ const TransactionTable = ({ month }) => {
         <button onClick={() => setPage(page => page + 1)}>Next</button>
       </div>
       </div>
-    </div>
+    </div>}</>
+    
   );
 };
 

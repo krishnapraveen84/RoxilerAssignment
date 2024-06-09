@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:9000';
+const API_BASE_URL = 'https://roxilerassignment-re0k.onrender.com';
 
 export const getTransactions = (search = '', page = 1, perPage = 10) => {
   return axios.get(`${API_BASE_URL}/transactions`, {

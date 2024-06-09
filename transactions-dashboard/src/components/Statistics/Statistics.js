@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getStatistics } from '../../api';
 import './index.css'
+import LoaderEffect from '../LoaderSpi';
 
 
 const Statistics = () => {
@@ -9,9 +10,11 @@ const Statistics = () => {
     { name: 'Total Sold', value: 0 },
     { name: 'Total Not Sold', value: 0 },]);
   const [month, setMonth] = useState('01');
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchStatistics = async () => {
+      setIsLoading(true)
       const response = await getStatistics(month);
       const stats = response.data
       console.log(stats)
@@ -20,6 +23,7 @@ const Statistics = () => {
         { name: 'Total Sold', value: stats.totalSold },
         { name: 'Total UnSold', value: stats.totalUnsold },
       ]);
+      setIsLoading(false)
       console.log(response)
     };
 
@@ -27,7 +31,8 @@ const Statistics = () => {
   }, [month]);
 
   return (
-    <div className='stats-bg-container'>
+    <>{isLoading ? <div className='loader-container'><LoaderEffect /></div> :
+     <div className='stats-bg-container'>
       <h1 className='heading'>Statistics</h1>
       <label className='label'>
         Select Month:
@@ -51,7 +56,8 @@ const Statistics = () => {
         <p className='stat'>Total Sold Items: <span>{stats[1].value}</span></p>
         <p className='stat'>Total UnSold Items: <span>{stats[2].value}</span></p>
       </div>
-    </div>
+    </div>}</>
+    
   );
 };
 
